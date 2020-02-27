@@ -14,8 +14,10 @@
   },
   "main": "lib/index.js",
   "dependencies": {
+    "express": "^4.17.1",
     "firebase-admin": "^8.6.0",
-    "firebase-functions": "^3.3.0"
+    "firebase-functions": "^3.3.0",
+    "twilio": "^3.39.5"
   },
   "devDependencies": {
     "tslint": "^5.12.0",
