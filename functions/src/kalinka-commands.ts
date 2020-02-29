@@ -1,3 +1,4 @@
+import * as customerDatabase from './database/customer';
 import * as menuDatabase from './database/menu';
 import * as messages from './messages';
 import { RegisteredUserMessage } from "./models/user";
@@ -16,7 +17,8 @@ export async function processCommand(userMessage: RegisteredUserMessage): Promis
     } else if (command === 'cancelar') {
         return '';
     } else if (command === 'olvidar') {
-        return '';
+        customerDatabase.removeCustomer(userMessage.id);
+        return messages.ERASE_ALL_DATA;
     } else {
         return detectOrder(userMessage);
     }

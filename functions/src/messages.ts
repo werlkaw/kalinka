@@ -8,6 +8,8 @@ export const NOT_REGISTERED = 'Hola, soy un robot! Es la primera vez que' +
 export const ORDER_INSTRUCTIONS = 'Para hacer un pedido, manda cantidad' +
                                   ' + producto. Por ejemplo: "6 baguettes"';
 
+export const ERASE_ALL_DATA = 'Borré toda tu información.';
+
 const NEW_CUSTOMER = `Hola, %s. Gracias por registrarte. Para hacer un` +
                      ` pedido, escribe "pedido". Para ver el menú, escribe` +
                      ` "menu".`;                 
