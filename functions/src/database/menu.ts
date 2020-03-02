@@ -9,7 +9,7 @@ export function addMenuItem(name: string, price: number) {
     }).then().catch();
 }
 
-export async function getMenuItems(): Promise<any> {
+export async function getMenuItems(): Promise<MenuItem[]> {
     const menuRef = admin.database().ref('menu');
     const snapshot = await menuRef.once('value');
     const menuItems: MenuItem[] = [];
