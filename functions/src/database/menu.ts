@@ -12,7 +12,7 @@ export function addMenuItem(name: string, price: number) {
 export async function getMenuItems(): Promise<any> {
     const menuRef = admin.database().ref('menu');
     const snapshot = await menuRef.once('value');
-    let menuItems: MenuItem[] = [];
+    const menuItems: MenuItem[] = [];
     for (const key in snapshot.val()) {
         console.log("this is the value: " + JSON.stringify(snapshot.val()[key]));
         menuItems.push(snapshot.val()[key]);

@@ -2,6 +2,8 @@ import * as express from 'express';
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 
+admin.initializeApp(functions.config().firebase);
+
 import * as customerDatabase from './database/customer';
 import * as menuDatabase from './database/menu';
 import * as onboardingDatabase from './database/onboarding';
@@ -9,7 +11,6 @@ import * as kalinka_commands from './kalinka-commands';
 import * as messages from './messages';
 import { cleanString } from './util';
 
-admin.initializeApp(functions.config().firebase);
 const MessagingResponse = require('twilio').twiml.MessagingResponse;
 
 /* Express */
