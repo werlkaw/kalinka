@@ -73,7 +73,7 @@ async function detectOrder(userMessage: RegisteredUserMessage):
                                      Number(orderParts[0])).then().catch();
     } else {
         console.log("order does not exist");
-        const newOrder = await orderDatabase.createOrder(userMessage.id);
+        const newOrder = await orderDatabase.createOrder(userMessage);
         orderDatabase.addItemToOrder(newOrder,
                                      orderParts[1],
                                      Number(orderParts[0])).then().catch();

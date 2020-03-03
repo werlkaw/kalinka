@@ -1,5 +1,6 @@
 export type Order = {
     userId: string,
+    userName: string,
     completed: boolean,
     expiration: number,
     items: OrderItem[],

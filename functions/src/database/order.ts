@@ -1,5 +1,6 @@
 import * as admin from 'firebase-admin';
 import { Order, KeyedOrder } from '../models/order';
+import { RegisteredUserMessage } from '../models/user';
 
 const orderRef = admin.database().ref('orders');
 
@@ -20,9 +21,11 @@ export async function getOpenOrder(userId: string): Promise<KeyedOrder | null> {
     return null;
 }
 
-export async function createOrder(userId: string): Promise<KeyedOrder | null> {
+export async function createOrder(userMessage: RegisteredUserMessage):
+    Promise<KeyedOrder | null> {
     const newOrder: Order = {
-        userId: userId,
+        userId: userMessage.id,
+        userName: userMessage.name,
         completed: false,
         expiration: Date.now() + 86400000,
         items: []
