@@ -69,13 +69,13 @@ async function detectOrder(userMessage: RegisteredUserMessage):
     } else if (openOrder !== null) {
         console.log("order exists");
         orderDatabase.addItemToOrder(openOrder,
-                                     orderParts[1],
+                                     menuItem,
                                      Number(orderParts[0])).then().catch();
     } else {
         console.log("order does not exist");
         const newOrder = await orderDatabase.createOrder(userMessage);
         orderDatabase.addItemToOrder(newOrder,
-                                     orderParts[1],
+                                     menuItem,
                                      Number(orderParts[0])).then().catch();
 
     }

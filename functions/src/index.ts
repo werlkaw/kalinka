@@ -56,30 +56,6 @@ main.post('/twilio', async (req, resp) => {
         twilioResponse.message(messages.NOT_REGISTERED);
     }
     resp.end(twilioResponse.toString());
-    // resp.send("oops");
-    // resp.end();
-    // return;
-    // if (match.distance < .5) {
-    //     resp.send("didn't understand");
-    // } else if (match.value === 'menu') {
-    //     resp.send("menu");
-    // } else if (match.value === 'pedido') {
-    //     resp.send("pedido");
-    // } else if (match.value === 'terminar') {
-    //     resp.send("terminar");
-    // } else if (match.value === 'cancelar') {
-    //     resp.send("cancelar");
-    // } else if (match.value === 'olvidar') {
-    //     resp.send("olvidar");
-    // } else {
-    //     resp.send("else");
-    // }
-    // resp.end();
-    // return;
-    // twilioResponse.message(`I saw: ${message} from ${phone}`);
-
-    // resp.writeHead(200, {'Content-Type': 'text/xml'});
-    // resp.end(twilioResponse.tostring());
 });
 
 export const kalinka = functions.https.onRequest(main);
