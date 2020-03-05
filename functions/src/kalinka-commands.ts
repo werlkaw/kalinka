@@ -57,7 +57,7 @@ async function printFullMenu(): Promise<string> {
 async function detectOrder(userMessage: RegisteredUserMessage):
   Promise<string> {
     const orderParts = userMessage.message.split(' ');
-    const openOrder = await orderDatabase.getOpenOrder(userMessage.id);
+    let openOrder = await orderDatabase.getOpenOrder(userMessage.id);
     const menuItem = await detectMenuItem(orderParts[1]);
     if (menuItem === null || orderParts.length !== 2 ||
         isNaN(Number(orderParts[0]))) {
@@ -66,23 +66,23 @@ async function detectOrder(userMessage: RegisteredUserMessage):
         } else {
             return messages.OPTIONS;
         }
-    } else if (openOrder !== null) {
-        console.log("order exists");
-        orderDatabase.addItemToOrder(openOrder,
-                                     menuItem,
-                                     Number(orderParts[0])).then().catch();
-    } else {
-        console.log("order does not exist");
-        const newOrder = await orderDatabase.createOrder(userMessage);
-        orderDatabase.addItemToOrder(newOrder,
-                                     menuItem,
-                                     Number(orderParts[0])).then().catch();
-
+    } else if (openOrder === null) {
+        console.log('creating order');
+        openOrder = await orderDatabase.createOrder(userMessage);
     }
+    const quantity = Number(orderParts[0]);
+    orderDatabase.addItemToOrder(openOrder,
+                                pluralizeMenuItem(menuItem, quantity),
+                                quantity).then().catch();
+
     return messages.continueOrderMessage({
         menuItem: menuItem,
         quantity: Number(orderParts[0])
     });
+}
+
+function pluralizeMenuItem(menuItem: string, quantity: Number): string {
+    return quantity > 1 ? menuItem + "s" : menuItem;
 }
 
 async function detectMenuItem(menuOrder: string): Promise<string | null> {
