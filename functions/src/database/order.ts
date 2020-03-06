@@ -21,6 +21,14 @@ export async function getOpenOrder(userId: string): Promise<KeyedOrder | null> {
     return null;
 }
 
+export async function getOrderFromOrderId(orderId: string): Promise<KeyedOrder> {
+    const snapshot = await orderRef.child(orderId).once('value');
+    return {
+        key: orderId,
+        order: snapshot.val()
+    }
+}
+
 export async function createOrder(userMessage: RegisteredUserMessage):
     Promise<KeyedOrder | null> {
     const newOrder: Order = {
@@ -62,6 +70,14 @@ export async function completeOpenOrder(keyedOrder: KeyedOrder):
     order.update({
         completed: true
     }).then().catch();
+    var message = {
+        notification: {
+          title: 'Kalinka App',
+          body: 'Llegó un nuevo pedido!',
+        },
+        topic: 'kalinka'
+    };
+    admin.messaging().send(message).then().catch();
     return keyedOrder;
 }
 
