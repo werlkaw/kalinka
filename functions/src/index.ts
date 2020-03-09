@@ -12,6 +12,7 @@ import * as kalinka_commands from './kalinka-commands';
 import * as messages from './messages';
 import { cleanString } from './util';
 import { KeyedOrder } from './models/order';
+import { ACCOUNT_SID, AUTH_TOKEN } from './twilio-api';
 
 const MessagingResponse = require('twilio').twiml.MessagingResponse;
 
@@ -69,7 +70,7 @@ main.post('/twilio', async (req, resp) => {
 export const kalinka = functions.https.onRequest(main);
 
 
-const client = require('twilio')(accountSid, authToken);
+const client = require('twilio')(ACCOUNT_SID, AUTH_TOKEN);
 export const notifyCustomer = functions.database
     .ref("/orders/{orderId}/reply").onCreate(async (snapshot, context) => {
         const kalinkaResponse = snapshot.val();
