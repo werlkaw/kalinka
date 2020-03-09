@@ -23,6 +23,9 @@ api.get('*', (req, resp) => {
     resp.send('api is working!');
 });
 
+const OPENING_HOUR = 10;
+const CLOSING_HOUR = 16;
+
 main.use('/api/v1', api);
 main.post('/twilio', async (req, resp) => {
     const userId: string = req.body['From'];
@@ -33,15 +36,18 @@ main.post('/twilio', async (req, resp) => {
         resp.send("no phone");
         return;
     }
-
-    if (message === 'addCustomer') {
-        customerDatabase.registerCustomer(userId, message);
-    }
     if (userId === 'addMenuItem') {
         const menuItem = message.split(',');
         menuDatabase.addMenuItem(menuItem[0], Number.parseInt(menuItem[1]));
         resp.end("added item!");
         return;
+    }
+    const currentDatetime = new Date();
+    const dayOfWeek = currentDatetime.getDay();
+    const currentHour = currentDatetime.getHours();
+    if (dayOfWeek === 0 || currentHour < OPENING_HOUR ||
+        currentHour > CLOSING_HOUR) {
+        twilioResponse.message(messages.STORE_CLOSED);
     }
     if (await customerDatabase.isRegistered(userId)) {
         const customerName = await customerDatabase.getCustomerName(userId);
@@ -63,21 +69,19 @@ main.post('/twilio', async (req, resp) => {
 export const kalinka = functions.https.onRequest(main);
 
 
-const accountSid = 'AC80f1fa9d1000a17cf22791eda3bc46a6';
-const authToken = '0193b4caedd3d0d650ac112a015cff90';
 const client = require('twilio')(accountSid, authToken);
 export const notifyCustomer = functions.database
     .ref("/orders/{orderId}/reply").onCreate(async (snapshot, context) => {
         const kalinkaResponse = snapshot.val();
         const orderId = context.params.orderId;
-        const currentOrder: KeyedOrder = 
+        const currentOrder: KeyedOrder =
             await orderDatabase.getOrderFromOrderId(orderId);
         client.messages
             .create({
-               from: 'whatsapp:+14155238886',
-               body: kalinkaResponse,
-               to: currentOrder.order.userId
-             })
+                from: 'whatsapp:+14155238886',
+                body: kalinkaResponse,
+                to: currentOrder.order.userId
+            })
             .then((message: String) => console.log(message)).catch((error: any) => {
                 console.log(error);
             });
@@ -85,13 +89,13 @@ export const notifyCustomer = functions.database
 
 export const twilio = functions.https.onRequest((req, resp) => {
     client.messages
-      .create({
-         from: 'whatsapp:+14155238886',
-         body: 'Hello there!',
-         to: 'whatsapp:+16193652914'
-       })
-      .then((message: String) => console.log(message)).catch((error: any) => {
-          console.log(error);
-      });
+        .create({
+            from: 'whatsapp:+14155238886',
+            body: 'Hello there!',
+            to: 'whatsapp:+16193652914'
+        })
+        .then((message: String) => console.log(message)).catch((error: any) => {
+            console.log(error);
+        });
     resp.end("finished");
 });
