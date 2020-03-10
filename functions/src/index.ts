@@ -46,17 +46,19 @@ main.post('/twilio', async (req, resp) => {
     const currentDatetime = new Date();
     const dayOfWeek = currentDatetime.getDay();
     const currentHour = currentDatetime.getHours();
-    if (dayOfWeek === 0 || currentHour < OPENING_HOUR ||
-        currentHour > CLOSING_HOUR) {
-        twilioResponse.message(messages.STORE_CLOSED);
-    }
     if (await customerDatabase.isRegistered(userId)) {
-        const customerName = await customerDatabase.getCustomerName(userId);
-        twilioResponse.message(await kalinka_commands.processCommand({
-            id: userId,
-            name: customerName,
-            message: message
-        }))
+        if (dayOfWeek === 0 || currentHour < OPENING_HOUR ||
+            currentHour > CLOSING_HOUR) {
+            twilioResponse.message(messages.STORE_CLOSED);
+        } else {
+            const customerName =
+                await customerDatabase.getCustomerName(userId);
+            twilioResponse.message(await kalinka_commands.processCommand({
+                id: userId,
+                name: customerName,
+                message: message
+            }));
+        }
     } else if (await onboardingDatabase.isOnboarding(userId)) {
         customerDatabase.registerCustomer(userId, message);
         twilioResponse.message(messages.newCustomerMessage(message));
