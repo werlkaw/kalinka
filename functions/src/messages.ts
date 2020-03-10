@@ -25,7 +25,7 @@ export const NO_OPEN_ORDERS = 'No has empezado tu orden. Para ordenar, manda' +
 export const ORDER_CANCELLED = 'Su orden fue cancelada';
 
 export const STORE_CLOSED = 'No se pueden hacer pedidos a esta hora. Nuestro' + 
-                            ' horario de pedidos es de 10 am a 4pm de lunes a ' +
+                            ' horario de pedidos es de 10 am a 4pm de lunes a' +
                             ' sabado.';
 
 const COMPLETED_ORDER = 'Gracias por usar KalinkaBot. Registré tu' +
