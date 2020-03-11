@@ -13,6 +13,7 @@ import * as messages from './messages';
 import { cleanString } from './util';
 import { KeyedOrder } from './models/order';
 import { ACCOUNT_SID, AUTH_TOKEN } from './twilio-api';
+import { getKalinkaDate } from './date-helper';
 
 const MessagingResponse = require('twilio').twiml.MessagingResponse;
 
@@ -43,7 +44,7 @@ main.post('/twilio', async (req, resp) => {
         resp.end("added item!");
         return;
     }
-    const currentDatetime = new Date();
+    const currentDatetime = getKalinkaDate();
     const dayOfWeek = currentDatetime.getDay();
     const currentHour = currentDatetime.getHours();
     if (await customerDatabase.isRegistered(userId)) {
